@@ -2,16 +2,32 @@
 
 
 
+## Guiding Principles
+> Goals and Non-goals
 
+* Easy find
+  * an effort is made to include lots of possible matches
+  * eg: "blue" or "angry"
+* Keyboard friendly.
+  * Eg: `keyboard shortcut` -> `search phrase` -> `enter` and done.
+* Actual emoji. No images.
+  * This means: no custom emoji
+  * Also means: will render platform-appropriate versions. This can vary depending on where you're viewing the file
 
 ## Similar Obsidian Plugins
-(aka: "why did I need to build this?")
 
-* 
+> AKA: "why did I need to build this?"
+
+* [Emoji Shortcodes](https://github.com/phibr0/obsidian-emoji-shortcodes)
+  * Excellent plugin, seems to work great, but I like having a popup search panel instead of using the `:smile:` kind of syntax
+* [Emoji Toolbar](https://github.com/oliveryh/obsidian-emoji-toolbar)
+  * Currently the most popular "emoji" plugin for Obsidian
+  * Uses images instead of the text emoji char itself. That means some emoji can look different in the picker VS when I actually insert them in my file. There is a setting that might be related, but I wasn't able to get it to work.
+  * Started breaking for me (might be a "live preview" only bug). Would insert emoji at the start of the file instead of where my cursor is.
+
 
 
 ## Developing this Plugin
-
 
 ### Building
 
