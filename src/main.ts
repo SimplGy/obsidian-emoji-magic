@@ -16,6 +16,9 @@ limitations under the License.
 
 import { App, MarkdownView, Plugin, PluginSettingTab, Setting, TFile, moment } from 'obsidian';
 
+// The compiled "database" from Emoji Magic upstream
+import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emojilib_thesaurus.js';
+
 interface MyPluginSettings {
 	foo: string;
 }
@@ -31,7 +34,12 @@ export default class MyPlugin extends Plugin {
 	
 	async onload() {
 		await this.loadSettings();
-		console.log('loading ' + this.manifest.name);
+
+		// For fun, print how many keywords this plugin supports
+		const emojiCount = emojilibThesaurus.length;
+		const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
+		console.log(`${this.manifest.name}: Loading ${emojiCount} emoji with ${new Intl.NumberFormat().format(words)} searchable keywords and thesaurus entries`);
+
 		this.addSettingTab(new SettingsTab(this.app, this));
 		this.resetCommands();
 	}

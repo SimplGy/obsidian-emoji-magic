@@ -4,6 +4,12 @@
 
 
 
+## Similar Obsidian Plugins
+(aka: "why did I need to build this?")
+
+* 
+
+
 ## Developing this Plugin
 
 
@@ -15,6 +21,13 @@ npm run dev
 ```
 
 (for auto refreshing) install `git clone https://github.com/pjeby/hot-reload.git` and turn it on
+
+### (rarely) Sync with the upstream project
+
+```
+rm -rf lib/emoji-magic
+git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
+```
 
 ### Releasing
 
