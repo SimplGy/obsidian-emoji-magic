@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, MarkdownView, Plugin, PluginSettingTab, Setting, TFile, moment } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+
+import { SearchModal } from './search_modal';
 
 // The compiled "database" from Emoji Magic upstream
-import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emojilib_thesaurus.js';
+import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emoji_data.js';
 
 interface MyPluginSettings {
 	foo: string;
@@ -38,14 +40,14 @@ export default class MyPlugin extends Plugin {
 		// For fun, print how many keywords this plugin supports
 		const emojiCount = emojilibThesaurus.length;
 		const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
-		console.log(`${this.manifest.name}: Loading ${emojiCount} emoji with ${new Intl.NumberFormat().format(words)} searchable keywords and thesaurus entries`);
+		console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
 
 		this.addSettingTab(new SettingsTab(this.app, this));
 		this.resetCommands();
 	}
 
 	onunload() {
-		console.log('unloading ' + this.manifest.name);
+		// no-op
 	}
 
 	async loadSettings() {
@@ -60,23 +62,38 @@ export default class MyPlugin extends Plugin {
 	}
 
 
-	// ---------------------------------------------------- Commands
+	// ---------------------------------------------------- Command Setup
 	resetCommands() {
 		// if you "add" with the same id, it works as an "update"
 		this.addCommand({
 			id: 'emoji-magic-copy', // should not change over time
 			name: `Find an emoji and copy it to clipboard`,
-			callback: () => {
-				console.log('Hello from a plugin command');
-			}
+			callback: () => this.openSearchUX('copy'),
 		});
 		this.addCommand({
 			id: 'emoji-magic-insert', // should not change over time
 			name: `Find an emoji and insert it where your cursor is`,
-			callback: () => {
-				console.log('Hello from a plugin command');
-			}
+			callback: () => this.openSearchUX('insert'),
 		});
+	}
+
+
+	// ---------------------------------------------------- Actual Behavior
+	openSearchUX(mode: 'copy'|'insert') {
+		console.log(`Opening search panel in '${mode}' mode`);
+
+		const onSubmit = (): void => {
+				// replaceTaskWithTasks({
+				// 		originalTask: task,
+				// 		newTasks: DateFallback.removeInferredStatusIfNeeded(task, updatedTasks),
+				// });
+		};
+
+		const modal = new SearchModal({
+			app: this.app,
+			onSubmit,
+		});
+		modal.open();
 	}
 }
 
@@ -109,4 +126,11 @@ class SettingsTab extends PluginSettingTab {
 				});
 		});		
 	}
+}
+
+
+
+// ---------------------------------------------------- dep-free Util Function Lib
+function prettyNum(n: number) {
+	return new Intl.NumberFormat().format(n);
 }

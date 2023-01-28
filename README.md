@@ -1,6 +1,10 @@
 > Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
 
+## Features
 
+### Rich keyword search
+
+Dictionary contains 1,812 emoji and 199,658 searchable keywords and thesaurus entries.
 
 ## Guiding Principles
 > Goals and Non-goals
@@ -13,6 +17,11 @@
 * Actual emoji. No images.
   * This means: no custom emoji
   * Also means: will render platform-appropriate versions. This can vary depending on where you're viewing the file
+  * Also means: you may see empty rectangles for emoji that are defined, but not supported by your device. (eg: 🦩 "flamingo" won't be there if you're on an older Mac)
+
+## Installing this Plugin
+
+Add a hotkey. I like `cmd + shift + e` ("e" for "emoji").
 
 ## Similar Obsidian Plugins
 
@@ -66,14 +75,17 @@ git push origin 0.1.0
 4. (you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
 
 
+## TODOs (easy / obvious)
+- [ ] escape to close
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
 
-
-
-
-
-
-
-
+## Future
+- [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals
 
 
 
