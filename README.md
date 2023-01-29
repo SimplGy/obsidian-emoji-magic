@@ -14,6 +14,7 @@ Dictionary contains 1,812 emoji and 199,658 searchable keywords and thesaurus en
   * eg: "blue" or "angry"
 * Keyboard friendly.
   * Eg: `keyboard shortcut` -> `search phrase` -> `enter` and done.
+  * Because this plugin shows a grid of emoji, good keyboard support meant two-dimensional arrow key support as well.
 * Actual emoji. No images.
   * This means: no custom emoji
   * Also means: will render platform-appropriate versions. This can vary depending on where you're viewing the file
@@ -75,14 +76,6 @@ git push origin 0.1.0
 4. (you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
 
 
-## TODOs (easy / obvious)
-- [ ] escape to close
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
 
 ## Future
 - [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals

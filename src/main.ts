@@ -14,19 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, MarkdownView, Editor } from 'obsidian';
 
 import { SearchModal } from './search_modal';
+// import { SearchModal } from './search_modal_suggest_variant';
 
 // The compiled "database" from Emoji Magic upstream
-import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emoji_data.js';
+// import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emoji_data.js';
 
 interface MyPluginSettings {
-	foo: string;
 }
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
-	foo: 'Sounds good.'
 };
 
 // ---------------------------------------------------- Plugin Definition
@@ -37,10 +36,10 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// For fun, print how many keywords this plugin supports
-		const emojiCount = emojilibThesaurus.length;
-		const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
-		console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
+		// For fun, print how many keywords this plugin  (except don't, because it's really slow to calculate)
+		// const emojiCount = emojilibThesaurus.length;
+		// const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
+		// console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
 
 		this.addSettingTab(new SettingsTab(this.app, this));
 		this.resetCommands();
@@ -66,35 +65,34 @@ export default class MyPlugin extends Plugin {
 	resetCommands() {
 		// if you "add" with the same id, it works as an "update"
 		this.addCommand({
-			id: 'emoji-magic-copy', // should not change over time
-			name: `Find an emoji and copy it to clipboard`,
-			callback: () => this.openSearchUX('copy'),
-		});
-		this.addCommand({
 			id: 'emoji-magic-insert', // should not change over time
 			name: `Find an emoji and insert it where your cursor is`,
-			callback: () => this.openSearchUX('insert'),
+			callback: () => this.openSearchUX(),
 		});
 	}
 
 
 	// ---------------------------------------------------- Actual Behavior
-	openSearchUX(mode: 'copy'|'insert') {
-		console.log(`Opening search panel in '${mode}' mode`);
-
-		const onSubmit = (): void => {
-				// replaceTaskWithTasks({
-				// 		originalTask: task,
-				// 		newTasks: DateFallback.removeInferredStatusIfNeeded(task, updatedTasks),
-				// });
-		};
-
-		const modal = new SearchModal({
-			app: this.app,
-			onSubmit,
-		});
+	openSearchUX() {
+		const modal = new SearchModal(this.app, this.insertTextAtCursor);
 		modal.open();
 	}
+
+	insertTextAtCursor = (text: string) => {
+		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+			
+		// Make sure the user is editing a Markdown file.
+		if (view) {
+			// Insert text
+			const cursor = view.editor.getCursor();
+			view.editor.replaceRange(text, cursor);
+			// then, move their cursor *after* the text we inserted
+			const newPos = cursor.ch + text.length;
+			view.editor.setCursor({ ...cursor, ch: newPos });
+		} else {
+			console.warn("Asked to insertTextAtCursor, but didn't find a MarkdownView");
+		}
+	};
 }
 
 
@@ -114,17 +112,17 @@ class SettingsTab extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.createEl("h2", { text: this.plugin.manifest.name });
 		
-		const setting = new Setting(this.containerEl);
-	  setting.setName("Setting for 'foo'");
-		setting.addText(cb => {
-			cb
-				.setPlaceholder("placeholder text")
-				.setValue(this.plugin.settings.foo)
-				.onChange(value => {
-					this.plugin.settings.foo = value;
-					this.plugin.saveSettings();
-				});
-		});		
+		// const setting = new Setting(this.containerEl);
+	  // setting.setName("Setting for 'foo'");
+		// setting.addText(cb => {
+		// 	cb
+		// 		.setPlaceholder("placeholder text")
+		// 		.setValue(this.plugin.settings.foo)
+		// 		.onChange(value => {
+		// 			this.plugin.settings.foo = value;
+		// 			this.plugin.saveSettings();
+		// 		});
+		// });		
 	}
 }
 

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 /* Global stylesheet for this plugin. Not sure how it gets included, I guess by naming convention? */
+/* confirmed, I think: https://marcus.se.net/obsidian-plugin-docs/user-interface/html-elements#style-your-elements */
 
 
 
@@ -29,6 +30,21 @@ limitations under the License.
 .emoji-magic-modal input[type="search"] {
   width: 100%;
   margin-bottom: var(--size-4-4); /* obsidian var */
+}
+
+.emoji-magic-modal footer {
+  margin-top: var(--size-4-4); /* obsidian var */
+  color: var(--text-faint);
+  font-size: var(--font-smallest);
+}
+
+.emoji-magic-modal footer a {
+  color: var(--text-faint);
+}
+
+.emoji-magic-modal footer a:hover,
+.emoji-magic-modal footer a:focus {
+  color: var(--link-color);
 }
 
 .emoji-magic-modal ol.results {
@@ -59,6 +75,7 @@ limitations under the License.
   width: 100%;
   font-size: 1.5rem;
   padding-top: 4px; /* visually center the emojiiii */
+  overflow: hidden; /* in some cases, (ie: zwj fails) the text can overflow. don't let that confuse other parts of the UI. */
 }
 
 .emoji-magic-modal .results button:focus {
