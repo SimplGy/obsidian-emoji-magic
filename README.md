@@ -78,8 +78,8 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 (replace with the new version number)
 
 ```
-git tag -a 0.0.6 -m "0.0.6"
-git push origin 0.0.6
+git tag -a 0.0.7 -m "0.0.7"
+git push origin 0.0.7
 ```
 
 > This will trigger `.github/workflows/release.yml`.
