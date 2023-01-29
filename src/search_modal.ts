@@ -14,11 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, Modal } from 'obsidian';
+import { App, Modal, Plugin } from 'obsidian';
+
+import { MyPluginSettings, Emoji } from './interfaces';
 
 // from Emoji Magic upstream
-import {search as emojiSearch, htmlForAllEmoji as htmlForTheseEmoji} from '../lib/emoji-magic/src/app_data/emoji.js';
-
+import {search as emojiSearch, htmlForAllEmoji as htmlForTheseEmoji, RECENT_SELECTION_LIMIT, DEFAULT_RESULTS, toObj as toEmojiObj} from '../lib/emoji-magic/src/app_data/emoji.js';
 
 
 const EMOJIS_PER_ROW = 8; // Not 100% fixed, depends on font size/zoom settings
@@ -56,10 +57,11 @@ export class SearchModal extends Modal {
     private dom?: EmojiPickerDom;
 
     constructor(
-      app: App,
+      readonly plugin: Plugin, // generic plugin to avoid circular dep
       readonly onSubmit: (result: string) => void,
+      readonly settings: MyPluginSettings,
     ) {
-        super(app);
+        super(plugin.app);
         this.modalEl.addClass('emoji-magic-modal');
     }
 
@@ -103,18 +105,32 @@ export class SearchModal extends Modal {
 
     private onKeyupSearchArea = (evt, dom: EmojiPickerDom) => {
       const el = evt.target as HTMLInputElement|undefined;
-      console.log('onKeyupSearchArea', evt);
-
       const str = el?.value ?? '';
 
       if (evt.keyCode === ENTER) {
         const emoji = getFirstEmoji(dom);
         this.chooseEmoji(emoji);
       } else {
-        filterAndRender(str, dom);
+        this.filterAndRender(str);
       }
     };
 
+    private filterAndRender(str: string) {
+      // Empty or short query? show recent or default
+      str = str.trim();
+      let emojiObjects: Emoji[] = [];
+
+      if (str.length < 3) {
+        let results = this.settings.recentEmoji;
+        if (results.length === 0) results = DEFAULT_RESULTS;
+        emojiObjects = results.map(toEmojiObj);
+      } else {
+        emojiObjects = emojiSearch(str);
+        // console.log(`Emoji Magic: results for '${str}'`, emojiObjects);
+      }
+      
+      renderEmoji(emojiObjects, this.dom?.resultsEl);
+    }
 
     private onAnyClick = (evt) => {
       if (isButton(evt.target)) {
@@ -147,6 +163,7 @@ export class SearchModal extends Modal {
     }
 
     private chooseEmoji(char: string = '') {
+      this.trackRecent(char);
       this.close();
       this.onSubmit(char);
     }
@@ -155,8 +172,24 @@ export class SearchModal extends Modal {
       this.contentEl.empty();
       this.contentEl.removeEventListener('click', this.onAnyClick);
     }
-}
 
+  // add recent selection, but only track the most recent k
+  // also deduplicates: if it's already present, remove matches first before putting the most recent at the front
+  private trackRecent(char: string) {
+    if (!char) return;
+
+    let arr = this.settings.recentEmoji.slice();
+
+    arr = arr.filter(c => c !== char);
+    arr.unshift(char);
+    if (arr.length > RECENT_SELECTION_LIMIT) {
+      arr = arr.slice(0, RECENT_SELECTION_LIMIT);
+    }
+
+    this.settings.recentEmoji = arr;
+    this.plugin.saveData(this.settings);
+  }
+}
 
 
 
@@ -264,16 +297,6 @@ function randomPick<T>(arr: Array<T>): T {
 function isButton(o: any): o is HTMLButtonElement {
   if ((o as HTMLButtonElement)?.tagName === 'BUTTON') return true;
   return false;
-}
-
-function filterAndRender(str: string, dom: EmojiPickerDom) {
-  if (str.length === 1) return;
-  if (str.length === 2) return;
-  // >3 chars? ok, search:
-  
-  const emojiObjects = emojiSearch(str);
-  // console.log(`Emoji Magic: results for '${str}'`, emojiObjects);
-  renderEmoji(emojiObjects, dom.resultsEl);
 }
 
 function renderEmoji(emojiObjects, targetEl) {

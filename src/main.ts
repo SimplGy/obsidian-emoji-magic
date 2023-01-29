@@ -17,6 +17,7 @@ limitations under the License.
 import { App, Plugin, PluginSettingTab, MarkdownView } from 'obsidian';
 
 import { SearchModal } from './search_modal';
+import { MyPluginSettings } from './interfaces';
 // import { SearchModal } from './search_modal_suggest_variant';
 
 // The compiled "database" from Emoji Magic upstream
@@ -24,13 +25,11 @@ import { SearchModal } from './search_modal';
 
 const CHROME_EXTENSION_URL = 'https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln';
 const GITHUB_REPO_URL = 'https://github.com/SimplGy/obsidian-emoji-magic';
-
-
-
-interface MyPluginSettings {
-}
+const emojiCount = 1_812; // emojilibThesaurus.length;
+const words = 119_658; // emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
 
 const DEFAULT_SETTINGS: MyPluginSettings = {
+	recentEmoji: [],
 };
 
 // ---------------------------------------------------- Plugin Definition
@@ -42,8 +41,6 @@ export default class MyPlugin extends Plugin {
 		await this.loadSettings();
 
 		// For fun, print how many keywords this plugin  (except don't live-calculate, because it's slow to calculate)
-		const emojiCount = 1_812; // emojilibThesaurus.length;
-		const words = 119_658; // emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
 		console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
 
 		this.addSettingTab(new SettingsTab(this.app, this));
@@ -61,8 +58,9 @@ export default class MyPlugin extends Plugin {
 	// note: this is called ~every keystroke, so be aware
 	async saveSettings() {
 		await this.saveData(this.settings);
-		// update the commands, which is what hotkeys are set against
-		this.resetCommands();
+		
+		// update the commands if needed
+		// this.resetCommands();
 	}
 
 
@@ -79,7 +77,7 @@ export default class MyPlugin extends Plugin {
 
 	// ---------------------------------------------------- Actual Behavior
 	openSearchUX() {
-		const modal = new SearchModal(this.app, this.insertTextAtCursor);
+		const modal = new SearchModal(this, this.insertTextAtCursor, this.settings);
 		modal.open();
 	}
 
@@ -125,6 +123,10 @@ class SettingsTab extends PluginSettingTab {
 			<p>This plugin is Most useful if you add a hotkey.</p>
 			<p>I like: <code style="background-color: var(--color-base-20): padding: 0 3px;">cmd + shift + e</code></p>
 			<p>("e" for "emoji")</p>
+
+			<hr/>
+
+			<p>Your recent emoji: <code style="background-color: var(--color-base-20): padding: 0 3px;">${this.plugin.settings.recentEmoji.join('  ')}</code></p>
 
 			<hr/>
 			
