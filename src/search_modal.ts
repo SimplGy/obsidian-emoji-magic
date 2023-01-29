@@ -14,16 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, Modal, Setting } from 'obsidian';
-// import EditTask from './ui/EditTask.svelte';
-// import type { Task } from './Task';
-// import { StatusRegistry } from './StatusRegistry';
-// import { Status } from './Status';
-
-// TODO
-// .modal-container that contains .emoji-magic-modal should do:
-// align-items: flex-start
-// top: 10% // default max-height is 80% so this will look centered when full size
+import { App, Modal } from 'obsidian';
 
 // from Emoji Magic upstream
 import {search as emojiSearch, htmlForAllEmoji as htmlForTheseEmoji} from '../lib/emoji-magic/src/app_data/emoji.js';
@@ -34,11 +25,14 @@ const EMOJIS_PER_ROW = 8; // Not 100% fixed, depends on font size/zoom settings
 const RESULT_LIMIT = EMOJIS_PER_ROW * 15; // for render perf, don't draw everything.
 const CHROME_EXTENSION_URL = 'https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln';
 const STATIC_WEB_APP_URL = 'https://www.simple.gy/emoji-magic/';
+
+// Rotate these messages whenever the popup opens to maybe keep things fresh/fun
 const MESSAGES = [
   `Also available as a <a href="${CHROME_EXTENSION_URL}">Chrome Extension</a>`,
   `Brought to you by <a href="http://www.simple.gy">simple.gy</a>`,
   `Check out the  <a href="${STATIC_WEB_APP_URL}">web app</a>`,
 ];
+const EXAMPLE_SEARCHES = [ 'party', 'thank', 'happy', 'new', 'drink' ];
 
 // keycodes
 const LEFT = 37;
@@ -58,8 +52,6 @@ interface EmojiPickerDom {
 
 export class SearchModal extends Modal {
     result: string;
-
-    // public readonly onSubmit: (result: string) => void;
     private dom?: EmojiPickerDom;
 
     constructor(
@@ -72,14 +64,14 @@ export class SearchModal extends Modal {
     }
 
     public onOpen() {
-        // this.titleEl.setText('Add Emoji');
         const { contentEl } = this;
 
         // ------------------------ Search Box
         const searchEl = document.createElement('input');
         searchEl.setAttribute('type', 'search');
         searchEl.setAttribute('autofocus', 'true');
-        searchEl.setAttribute('placeholder', 'Search for emoji (eg: "party")');
+        const eg = randomPick(EXAMPLE_SEARCHES);
+        searchEl.setAttribute('placeholder', `Search for emoji (eg: "${eg}")`);
 
         // ------------------------ Grid of Emoji results
         const resultsEl = document.createElement('ol');
@@ -89,9 +81,7 @@ export class SearchModal extends Modal {
         const footerEl = document.createElement('footer');
         
         // ------------------------ Footer with a rotating message
-        const msgIdx = Math.floor(Math.random() * MESSAGES.length);
-        const msg = MESSAGES[msgIdx];
-        footerEl.innerHTML = msg;
+        footerEl.innerHTML = randomPick(MESSAGES);
 
         // ------------------------ DOM mutation
         contentEl.appendChild(searchEl);
@@ -242,6 +232,11 @@ function focusOn(idx, dom: EmojiPickerDom) {
 
 
 // ----------------------------------------------------- Lovely isolated pure function lib
+function randomPick<T>(arr: Array<T>): T {
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
+}
+
 function isButton(o: any): o is HTMLButtonElement {
   if ((o as HTMLButtonElement)?.tagName === 'BUTTON') return true;
   return false;
