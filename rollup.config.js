@@ -13,9 +13,6 @@ export default {
   external: ['obsidian'],
   plugins: [
     nodeResolve({ browser: true }),
-    // typescript(),
-    // commonjs(),
-    // typescript({ compilerOptions: { module: 'CommonJS' } }),
     typescript({ module: 'CommonJS' }),
     commonjs({ extensions: ['.js', '.ts'] }) // the ".ts" extension is required
   ]
