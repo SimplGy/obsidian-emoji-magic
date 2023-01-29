@@ -28,7 +28,7 @@ limitations under the License.
   align-self: flex-start;
   top: 10%;
 
-  width: 300px; /* because flex, this is functionally a max-width */
+  width: 300px; /* because of a flex container and related rules, this is functionally a max-width */
 }
 
 .emoji-magic-modal input[type="search"] {
@@ -54,10 +54,8 @@ limitations under the License.
 .emoji-magic-modal ol.results {
   margin: 0;
   padding: 0;
-  /* padding: 0.5rem 1rem; */
   list-style: none;
   display: grid;
-  /* -ms-grid-columns: (2rem)[auto-fill]; */
   grid-template-columns: repeat(auto-fill, 2rem);
   grid-auto-rows: 2rem;
 }
@@ -84,7 +82,6 @@ limitations under the License.
 
 .emoji-magic-modal .results button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
   background: var(--interactive-hover);
 }
 
@@ -98,10 +95,12 @@ limitations under the License.
 
 /* While search is focused, highlight the first item,
 because "enter" will copy and close */
-.emoji-magic-modal input[type="search"]:focus +
-.emoji-magic-modal .results li:first-of-type button {
-  background: rgba(0, 0, 0, 0.1);
+.emoji-magic-modal input[type="search"]:focus + .results li:first-of-type button {
   background: var(--interactive-hover);
+}
+
+.emoji-magic-modal .results li:first-of-type button {
+  /* background: pink !important; */
 }
 
 

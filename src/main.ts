@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, Plugin, PluginSettingTab, Setting, MarkdownView, Editor } from 'obsidian';
+import { App, Plugin, PluginSettingTab, MarkdownView } from 'obsidian';
 
 import { SearchModal } from './search_modal';
 // import { SearchModal } from './search_modal_suggest_variant';
@@ -119,10 +119,7 @@ class SettingsTab extends PluginSettingTab {
 		containerEl.createEl("h3", { text: 'How to use' });
 		containerEl.addClass('emoji-magic-settings');
 
-		// what it does
-		// Most useful if you add a hotkey. I like `cmd + shift + e` ("e" for "emoji")
-		// All you need to do is hit the 
-
+		// "what it does"
 		const aside = document.createElement('aside');
 		aside.innerHTML = `
 			<p>This plugin is Most useful if you add a hotkey.</p>
@@ -136,18 +133,6 @@ class SettingsTab extends PluginSettingTab {
 		`;
 
 		this.containerEl.appendChild(aside);
-
-		// const setting = new Setting(this.containerEl);
-	  // setting.setName("Setting for 'foo'");
-		// setting.addText(cb => {
-		// 	cb
-		// 		.setPlaceholder("placeholder text")
-		// 		.setValue(this.plugin.settings.foo)
-		// 		.onChange(value => {
-		// 			this.plugin.settings.foo = value;
-		// 			this.plugin.saveSettings();
-		// 		});
-		// });		
 	}
 }
 

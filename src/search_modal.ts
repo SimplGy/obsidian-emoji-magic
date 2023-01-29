@@ -30,15 +30,16 @@ const STATIC_WEB_APP_URL = 'https://www.simple.gy/emoji-magic/';
 const MESSAGES = [
   `Also available as a <a href="${CHROME_EXTENSION_URL}">Chrome Extension</a>`,
   `Brought to you by <a href="http://www.simple.gy">simple.gy</a>`,
-  `Check out the  <a href="${STATIC_WEB_APP_URL}">web app</a>`,
+  `Check out the <a href="${STATIC_WEB_APP_URL}">web app</a>`,
 ];
-const EXAMPLE_SEARCHES = [ 'party', 'thank', 'happy', 'new', 'drink' ];
+const EXAMPLE_SEARCHES = [ 'party', 'thank', 'happy', 'new', 'food', 'drink' ];
 
 // keycodes
 const LEFT = 37;
 const UP = 38;
 const RIGHT = 39;
 const DOWN = 40;
+const ENTER = 13;
 
 interface EmojiPickerDom {
   // must be the elemen that gets document.activeElement focus
@@ -60,7 +61,6 @@ export class SearchModal extends Modal {
     ) {
         super(app);
         this.modalEl.addClass('emoji-magic-modal');
-
     }
 
     public onOpen() {
@@ -94,13 +94,27 @@ export class SearchModal extends Modal {
 
         // ------------------------ Event Listeners
         searchEl.addEventListener('keyup', evt => {
-          const str = (evt.target as HTMLInputElement)?.value;
-          filterAndRender(str, resultsEl);
+          this.onKeyupSearchArea(evt, this.dom!);
         });
         // delegated button click handler. Is also fired for keyboard enter on button elements.
         contentEl.addEventListener('click', this.onAnyClick);
         contentEl.addEventListener('keyup', this.onAnyKey);
     }
+
+    private onKeyupSearchArea = (evt, dom: EmojiPickerDom) => {
+      const el = evt.target as HTMLInputElement|undefined;
+      console.log('onKeyupSearchArea', evt);
+
+      const str = el?.value ?? '';
+
+      if (evt.keyCode === ENTER) {
+        const emoji = getFirstEmoji(dom);
+        this.chooseEmoji(emoji);
+      } else {
+        filterAndRender(str, dom);
+      }
+    };
+
 
     private onAnyClick = (evt) => {
       if (isButton(evt.target)) {
@@ -129,7 +143,10 @@ export class SearchModal extends Modal {
     };
 
     private onEmojiButtonPress(buttonEl: HTMLButtonElement) {
-      const char = buttonEl.innerText;
+      this.chooseEmoji(buttonEl.innerText);
+    }
+
+    private chooseEmoji(char: string = '') {
       this.close();
       this.onSubmit(char);
     }
@@ -144,6 +161,13 @@ export class SearchModal extends Modal {
 
 
 // ----------------------------------------------------- Lovely isolated pure function lib, but DOM-coupled
+function getFirstEmoji(dom: EmojiPickerDom) {
+  const btn = dom.resultsEl.querySelector('button'); // get the first button
+  if (!btn) return;
+  const char = btn.innerText;
+  return char;
+}
+
 // Move focus horizontally. +1 is right, -1 is left.
 // wraps around
 // boundary protection works because focusOn just exits if it doesn't find an el to focus
@@ -242,14 +266,14 @@ function isButton(o: any): o is HTMLButtonElement {
   return false;
 }
 
-function filterAndRender(str: string, targetEl) {
+function filterAndRender(str: string, dom: EmojiPickerDom) {
   if (str.length === 1) return;
   if (str.length === 2) return;
   // >3 chars? ok, search:
   
   const emojiObjects = emojiSearch(str);
   // console.log(`Emoji Magic: results for '${str}'`, emojiObjects);
-  renderEmoji(emojiObjects, targetEl);
+  renderEmoji(emojiObjects, dom.resultsEl);
 }
 
 function renderEmoji(emojiObjects, targetEl) {
