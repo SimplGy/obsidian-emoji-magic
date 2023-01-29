@@ -19,6 +19,10 @@ limitations under the License.
 
 
 
+.emoji-magic-modal .modal-close-button {
+  display: none; /* clicking in bg and escape key still work */
+}
+
 .emoji-magic-modal {
   /* prevent "jitter" as the content height changes when users type */
   align-self: flex-start;

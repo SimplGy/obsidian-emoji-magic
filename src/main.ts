@@ -36,7 +36,7 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// For fun, print how many keywords this plugin  (except don't, because it's really slow to calculate)
+		// For fun, print how many keywords this plugin  (except don't, because it's slow to calculate)
 		// const emojiCount = emojilibThesaurus.length;
 		// const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
 		// console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);

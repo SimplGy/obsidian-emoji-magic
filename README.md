@@ -1,10 +1,21 @@
 > Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
 
+This plugin lets you add emoji to your notes quickly and easily.
+
+Screenshot:
+
+TODO
+
+Animated Screenshot:
+
+TODO
+
 ## Features
 
-### Rich keyword search
-
-Dictionary contains 1,812 emoji and 199,658 searchable keywords and thesaurus entries.
+1. Secure -- local only, no internet
+2. Rich keyword search -- the dictionary contains `1,812` emoji and `199,658` searchable keywords and thesaurus entries.
+3. Fast -- just keyboard shortcut and click
+4. Keyboard friendly -- arrow keys, tab, however you want.
 
 ## Guiding Principles
 > Goals and Non-goals
@@ -76,6 +87,14 @@ git push origin 0.1.0
 4. (you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
 
 
+
+## TODO
+PRs welcome.
+
+- [ ] save the most recent k emoji and show them by default (the upstream is wired up to do this, should be really close to ready)
+- [ ] solve the `zwj` problem (eg: "plane")
+- [ ] (upstream) improve some of the ranking (car, plane) and 
+- [ ] (upstream) fix the lack of "stemming" problem (eg: "race car")
 
 ## Future
 - [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals
