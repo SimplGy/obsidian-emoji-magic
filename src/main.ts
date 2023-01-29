@@ -22,6 +22,11 @@ import { SearchModal } from './search_modal';
 // The compiled "database" from Emoji Magic upstream
 // import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emoji_data.js';
 
+const CHROME_EXTENSION_URL = 'https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln';
+const GITHUB_REPO_URL = 'https://github.com/SimplGy/obsidian-emoji-magic';
+
+
+
 interface MyPluginSettings {
 }
 
@@ -36,10 +41,10 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// For fun, print how many keywords this plugin  (except don't, because it's slow to calculate)
-		// const emojiCount = emojilibThesaurus.length;
-		// const words = emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
-		// console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
+		// For fun, print how many keywords this plugin  (except don't live-calculate, because it's slow to calculate)
+		const emojiCount = 1_812; // emojilibThesaurus.length;
+		const words = 119_658; // emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
+		console.log(`${this.manifest.name}: Loading ${prettyNum(emojiCount)} emoji with ${prettyNum(words)} searchable keywords and thesaurus entries`);
 
 		this.addSettingTab(new SettingsTab(this.app, this));
 		this.resetCommands();
@@ -110,8 +115,28 @@ class SettingsTab extends PluginSettingTab {
 	display() {
 		const { containerEl } = this;
 		containerEl.empty();
-		containerEl.createEl("h2", { text: this.plugin.manifest.name });
-		
+		containerEl.createEl("h1", { text: this.plugin.manifest.name });
+		containerEl.createEl("h3", { text: 'How to use' });
+		containerEl.addClass('emoji-magic-settings');
+
+		// what it does
+		// Most useful if you add a hotkey. I like `cmd + shift + e` ("e" for "emoji")
+		// All you need to do is hit the 
+
+		const aside = document.createElement('aside');
+		aside.innerHTML = `
+			<p>This plugin is Most useful if you add a hotkey.</p>
+			<p>I like: <code style="background-color: var(--color-base-20): padding: 0 3px;">cmd + shift + e</code></p>
+			<p>("e" for "emoji")</p>
+
+			<hr/>
+			
+			<p>Emoji Magic is also available as a <a href="${CHROME_EXTENSION_URL}" >Chrome Extension</a>.</p>
+			<p>Please report problems with specific search phrases in the <a href="${GITHUB_REPO_URL}">GitHub repo</a>.</p>
+		`;
+
+		this.containerEl.appendChild(aside);
+
 		// const setting = new Setting(this.containerEl);
 	  // setting.setName("Setting for 'foo'");
 		// setting.addText(cb => {

@@ -1,6 +1,6 @@
-> Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
+This plugin lets you add emoji to your Obsidian notes quickly and easily.
 
-This plugin lets you add emoji to your notes quickly and easily.
+> Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
 
 Screenshot:
 
