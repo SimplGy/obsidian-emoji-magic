@@ -78,8 +78,8 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 (replace with the new version number)
 
 ```
-git tag -a 0.0.4 -m "0.0.4"
-git push origin 0.0.4
+git tag -a 0.0.5 -m "0.0.5"
+git push origin 0.0.5
 ```
 
 > This will trigger `.github/workflows/release.yml`.
@@ -94,10 +94,10 @@ git push origin 0.0.4
 ## TODO
 PRs welcome.
 
-- [ ] save the most recent k emoji and show them by default (the upstream is wired up to do this, should be really close to ready)
 - [ ] solve the `zwj` problem (eg: "plane")
 - [ ] (upstream) improve some of the ranking (car, plane) and 
 - [ ] (upstream) fix the lack of "stemming" problem (eg: "race car")
+- [ ] (upstream) adapt the headless stuff to be easier to reuse.
 
 ## Future
 - [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals
