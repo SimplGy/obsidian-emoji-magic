@@ -1,0 +1,196 @@
+// Copyright 2019 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+// ------------------------------------------ vars
+$colorBg: #fafafa
+$colorBrandL90: #e3d9f2 // Luminosity 90
+$colorBrandL70: #AA8DD8
+$colorBrandL50: #7553ac
+$colorBrandL40: #5e428a
+$colorBrandL30: #463267
+$colorBrand: $colorBrandL70
+$shade10: rgba(0,0,0,0.1)
+$shade20: rgba(0,0,0,0.2)
+$shade30: rgba(0,0,0,0.3)
+$light50: rgba(255,255,255,0.5)
+$light70: rgba(255,255,255,0.7)
+$emojiSize: 1.5rem
+$gridSize: 2rem // extra room for whitespace around emoji
+
+
+
+// ------------------------------------------ reset
+html, body, ol 
+  margin: 0
+  padding: 0
+body, input, button 
+  font-size: 1rem
+button 
+  border-radius: 5px 
+  cursor: pointer 
+  &:disabled
+    cursor: default
+
+
+
+// ------------------------------------------ Outer containers
+body 
+  background: $colorBg
+  font-family: Helvetica, Ubuntu, Arial, sans-serif
+.emoji-picker
+  min-width: 300px
+  // max-height: 485.410196625px // golden ratio. Nevermind. Better to let this be decided by RESULT_LIMIT
+  // outline: 1px dashed #ddd // for the dev environment only
+
+
+
+// ------------------------------------------ Search Area
+.search 
+  margin: 0.5rem 
+  margin-bottom: 0 
+  padding: 0 1rem 
+  border-radius: $gridSize / 2 // half of height
+  line-height: $gridSize
+  box-shadow: 0 0 0 2px $shade10
+  border: none
+  &:focus 
+    outline: none 
+    box-shadow: 0 0 0 2px $colorBrand
+
+input 
+  padding: 0 0.5rem 
+  min-width: 0 
+  &:focus 
+    background: white 
+
+
+
+// ------------------------------------------ Results Area
+.results 
+  padding: 0.5rem 1rem 
+  overflow-y: auto
+
+  // want the button for semantics and keyboard nav, not appearance
+  button
+    background: transparent
+    border: none 
+    -webkit-appearance: none 
+    padding: 0 
+    margin: 0 
+    height: 100% 
+    width: 100%
+    font-size: $emojiSize
+    padding-left: 1px // alignment tweak, so emojis look centered
+    padding-top: 1px // alignment tweak, so emojis look centered
+    
+    &:focus
+      outline: none
+      border-radius: 2px
+      box-shadow: 0 0 0 2px $shade30
+      background: $shade10
+  ol 
+    list-style: none 
+    display: grid 
+    grid-template-columns: repeat(auto-fill, 2rem) 
+    grid-auto-rows: 2rem 
+  li 
+    text-align: center 
+
+// While search is focused, highlight the first item,
+// because "enter" will copy and close
+.search:focus + .results li:first-of-type button
+  background: $shade10
+
+
+
+// ------------------------------------------ Output / copy area
+output
+  margin-top: 0
+  display: flex
+  flex-direction: row-reverse // so the button can be first in tab order but last visually
+  height: 3rem
+  line-height: 3rem
+  padding-left: 0.5rem
+  background: white
+  flex-shrink: 0
+
+.pseudo-clipboard
+  opacity: 0.4
+  margin: 10px
+  font-size: $emojiSize 
+  border: none
+  &:focus
+    opacity: 1 
+button.copy
+  background-color: $colorBrandL50
+  border: none
+  border-bottom: 3px solid $colorBrandL30
+  color: white 
+  font-weight: 500 
+  margin: 0.5rem
+  margin-right: 0.75rem // optical align with search box
+  padding: 0 0.5rem
+  min-width: 5rem
+  transition: color ease 200ms
+  transition: background-color ease 200ms
+  &:disabled
+    background: #ddd
+    color: $light70
+    background-color: $colorBrand
+    border-bottom: 3px solid $colorBrandL50
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 2px white, 0 0 0 4px $colorBrand
+
+
+
+// ------------------------------------------ css atoms
+// .muted
+  // color: #999
+.flex-kids-y
+  display: flex
+  flex-direction: column
+.flex-1
+  flex: 1 1 0
+
+
+
+// ------------------------------------------ Animation
+// Adapted from https://daneden.github.io/animate.css/
+@keyframes tada
+  0%
+    transform: scaleX(1)
+  10%,20%
+    transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg)
+  40%, 80%
+    transform: scale3d(1.1, 1.1, 1.1) rotate(3deg)
+  60%
+    transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg)
+  to
+    transform: scaleX(1)
+
+.tada
+  animation-name: tada
+
+.animated
+  animation-duration: .4s
+  -webkit-animation-fill-mode: both
+  animation-fill-mode: both
+
+@media (prefers-reduced-motion: reduce), (print)
+  .animated
+    animation-duration: 1ms !important
+    transition-duration: 1ms !important
+    animation-iteration-count: 1 !important

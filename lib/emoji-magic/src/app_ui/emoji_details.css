@@ -1,0 +1,19 @@
+.emoji-details dl {
+  color: gray;
+}
+
+.emoji-details h1, .emoji-details h2 {
+  text-align: center;
+}
+
+.emoji-details h1 {
+  font-size: 6rem;
+  margin-bottom: 0;
+}
+
+.emoji-details h2 {
+  margin-top: 0;
+  padding-top: 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+/*# sourceMappingURL=emoji_details.css.map */

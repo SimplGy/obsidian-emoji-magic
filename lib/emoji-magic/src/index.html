@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> <!-- required to show platform-rendered emojis -->
+	<link rel="stylesheet" type="text/css" href="app_ui/emoji_picker.css">
+	<link rel="stylesheet" type="text/css" href="site/site.css">
+  <link rel="shortcut icon" href="icons/favicon-32x32.png">
+</style>
+</head>
+<body>
+
+  <div class="appContainer">
+
+    <h1>🔮 Emoji Magic</h1>
+    
+    <aside class="emoji-picker flex-kids-y">
+      <input id="search" class="search" autocomplete="off" autofocus type="search" placeholder="Search for Emoji. (eg: 'party')">
+      <div class="results">
+        <ol id="results"></ol>
+      </div>
+      <output>
+        <button id="copyBtn" class="copy animated">Copy</button> <!-- first in tab order -->
+        <input id="clipboard" class="pseudo-clipboard flex-1" type="text">
+      </output>
+    </aside>
+
+    <footer>
+      Download the
+      <a target="_blank" href="https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln">Chrome Extension</a>
+    </footer>
+
+  </div>
+
+	<script src="js_utils/emulate_node_modules.js"></script>
+	<script src="js_utils/code_points.js"></script> <!-- window.code_points -->
+	<script src="js_utils/matchers.js"></script> <!-- window.matchers -->
+	<script src="js_utils/store.js"></script> <!-- window.store -->
+	<script src="app_data/emojilib_thesaurus.js"></script> <!-- window.emojilib_thesaurus -->
+	<script src="app_data/emoji_data.js"></script> <!-- window.emoji_data -->
+	<script src="app_data/emoji.js"></script> <!-- window.emoji -->
+  <script src="bind_to_dom.js"></script>
+  <script>
+    
+  // if you double click a button (emojis), navigate to the details page
+  document.addEventListener('dblclick', (evt) => {
+    if (evt.target.tagName === 'BUTTON') {
+      const char = evt.target.innerText;
+      window.location = `./emoji?${emoji.toCodePoints(char)}`; // encode the emoji for reasons
+    }
+  });
+  </script>
+</body>
+</html>

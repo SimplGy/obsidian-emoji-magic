@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> <!-- required to show platform-rendered emojis -->
+	<link rel="stylesheet" type="text/css" href="app_ui/emoji_picker.css">
+	<link rel="stylesheet" type="text/css" href="app_ui/emoji_details.css">
+  <link rel="stylesheet" type="text/css" href="site/site.css">
+  <link rel="shortcut icon" href="icons/favicon-32x32.png">
+</style>
+</head>
+<body>
+
+  <header style="text-align: center; margin-top: 10px; opacity: 0.2;">
+    <input id="SearchBox" type="search" autofocus title="Why is that word matching this emoji?">
+  </header>
+
+  <section class="emoji-details" id="Output"></section>
+
+  <footer>
+    Download the
+    <a target="_blank" href="https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln">Chrome Extension</a>
+  </footer>
+
+  <script src="js_utils/emulate_node_modules.js"></script>
+  <script src="js_utils/code_points.js"></script> <!-- window.code_points -->
+  <script src="js_utils/matchers.js"></script> <!-- window.matchers -->
+	<script src="js_utils/store.js"></script> <!-- window.store -->
+	<script src="app_data/emojilib_thesaurus.js"></script> <!-- window.emojilib_thesaurus -->
+  <script src="app_data/emoji_data.js"></script> <!-- window.emoji_data -->
+  <script src="app_data/emoji.js"></script> <!-- window.emoji -->
+	<script src="app_ui/emoji_details.js"></script> <!-- window.emoji_details -->
+  <script>
+    // This is the "Details" screen for emoji
+    // It's useful for seeing what keywords and synonyms matched a query
+
+    const HIGHLIGHT = 'highlight';
+
+    const $output = document.getElementById('Output');
+    const $search = document.getElementById('SearchBox');
+    
+
+    $search.addEventListener('input', ({target: {value}}) => {
+      updateHighlights(value);
+    });
+
+    function updateHighlights(query) {
+      // Start from a blank slate
+      Array.from(document.querySelectorAll('.' + HIGHLIGHT))
+        .forEach(el => el.classList.remove(HIGHLIGHT));
+
+      const $words = Array.from(document.querySelectorAll('.' + emoji_details.WORD));  
+      
+      // TODO: Use the same code path the actual search filtering uses
+      for (let word of query.split(' ')) {
+        if (word.trim() === '') continue;
+        $words.forEach(el => {
+          if (el.innerText.includes(word)) {
+            el.classList.add(HIGHLIGHT);
+          }
+        })
+      }
+    }
+
+    // get the emoji from the url param
+    const str = window.location.search.split('?').pop();
+    const codes = str.split(',');
+    const char = emoji.fromCodePoints(codes);
+    updateEmoji(char);
+
+    function updateEmoji(char) {
+      const emoji = emoji_data.toObj(char);
+      if (emoji == null) return console.warn(`${char} is not a known emoji`)
+      console.log({emoji});
+      $output.innerHTML = emoji_details.render(emoji);
+    }
+
+    
+  </script>
+</body>
+</html>
