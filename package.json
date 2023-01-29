@@ -1,6 +1,6 @@
 {
   "name": "obsidian-emoji-magic",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -11,9 +11,9 @@
   "author": "",
   "license": "APACHE",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "15.1.0",
-    "@rollup/plugin-node-resolve": "9.0.0",
-    "@rollup/plugin-typescript": "6.0.0",
+    "@rollup/plugin-commonjs": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-typescript": "^6.0.0",
     "@types/node": "^14.14.2",
     "obsidian": "https://github.com/obsidianmd/obsidian-api/tarball/master",
     "rollup": "2.32.1",

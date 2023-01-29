@@ -10,6 +10,3 @@ package-lock.json
 main.js
 *.js.map
 data.json
-
-# upstream
-lib/emoji-magic
