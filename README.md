@@ -4,11 +4,11 @@ This plugin lets you add emoji to your notes quickly and easily.
 
 Screenshot:
 
-TODO
+![screenshot](./screenshots/emoji-magic-blue.png?raw=true)
 
 Animated Screenshot:
 
-TODO
+![gif in action](./screenshots/emoji-magic-obsidian-2.gif?raw=true)
 
 ## Features
 
@@ -33,7 +33,10 @@ TODO
 
 ## Installing this Plugin
 
-Add a hotkey. I like `cmd + shift + e` ("e" for "emoji").
+1. Open settings -> Third party plugin -> Disable Safe mode
+1. Click "Browse community plugins" -> Search for "Magic File Hotkey"
+1. Install it, then click "enable"
+1. Add a hotkey. I like `cmd + shift + e` ("e" for "emoji").
 
 ## Similar Obsidian Plugins
 
