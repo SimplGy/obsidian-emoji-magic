@@ -1,14 +1,19 @@
-This plugin lets you add emoji to your Obsidian notes quickly and easily.
+This plugin lets you add emoji to your Obsidian notes more easiy using an enhanced keyword search.
 
-> Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
+It has a large dictionary of keywords so you can find emoji you wouldn't find otherwise:
 
-Screenshot:
-
-![screenshot](./screenshots/emoji-magic-blue.png?raw=true)
+* broad terms like "car" -> `🚓🚋🚔🏎️🚐🚕🚖`
+* colors like "orange" -> `📙🧡🍊🥕🚼`
 
 Animated Screenshot:
 
 ![gif in action](./screenshots/emoji-magic-obsidian-2.gif?raw=true)
+
+Still Screenshot:
+
+![screenshot](./screenshots/emoji-magic-blue.png?raw=true)
+
+
 
 ## Features
 
@@ -16,6 +21,10 @@ Animated Screenshot:
 2. Rich keyword search -- the dictionary contains `1,812` emoji and `199,658` searchable keywords and thesaurus entries.
 3. Fast -- just keyboard shortcut and click
 4. Keyboard friendly -- arrow keys, tab, however you want.
+
+> Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
+
+
 
 ## Guiding Principles
 > Goals and Non-goals
