@@ -55,8 +55,8 @@ Still Screenshot:
   * Excellent plugin, seems to work great, but I like having a popup search panel instead of using the `:smile:` kind of syntax
 * [Emoji Toolbar](https://github.com/oliveryh/obsidian-emoji-toolbar)
   * Currently the most popular "emoji" plugin for Obsidian
-  * Uses images instead of the text emoji char itself. That means some emoji can look different in the picker VS when I actually insert them in my file. There is a setting that might be related, but I wasn't able to get it to work.
-  * Started breaking for me (might be a "live preview" only bug). Would insert emoji at the start of the file instead of where my cursor is.
+  * Uses images instead of the text emoji char itself. That means some emoji can look different in the picker VS when I actually insert them in my file. There is a setting that might be related, but I wasn't able to get it to work. (Update: appears fixed in [v0.4.0](https://github.com/oliveryh/obsidian-emoji-toolbar/releases/tag/0.4.0))
+  * Started breaking for me (might be a "live preview" only bug). Would insert emoji at the start of the file instead of where my cursor is. (Update: appears fixed in [v0.4.0](https://github.com/oliveryh/obsidian-emoji-toolbar/releases/tag/0.4.0) or earlier)
 
 
 
