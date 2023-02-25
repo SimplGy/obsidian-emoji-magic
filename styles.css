@@ -103,4 +103,10 @@ because "enter" will copy and close */
   /* background: pink !important; */
 }
 
+.muted {
+  color: var(--text-faint);
+}
 
+.padded-sides {
+  padding: 0 4px;
+}

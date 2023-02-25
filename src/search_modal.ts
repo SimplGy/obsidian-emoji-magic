@@ -16,16 +16,14 @@ limitations under the License.
 
 import { Modal, Plugin } from 'obsidian';
 
-import { MyPluginSettings, Emoji } from './interfaces';
+import { EmojiMagicSettings, Emoji } from './interfaces';
 
 // from Emoji Magic upstream
 import {search as emojiSearch, htmlForAllEmoji as htmlForTheseEmoji, RECENT_SELECTION_LIMIT, DEFAULT_RESULTS, toObj as toEmojiObj} from '../lib/emoji-magic/src/app_data/emoji.js';
-
+import {CHROME_EXTENSION_URL, STATIC_WEB_APP_URL} from './cfg';
 
 const EMOJIS_PER_ROW = 8; // Not 100% fixed, depends on font size/zoom settings
 const RESULT_LIMIT = EMOJIS_PER_ROW * 15; // for render perf, don't draw everything.
-const CHROME_EXTENSION_URL = 'https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln';
-const STATIC_WEB_APP_URL = 'https://www.simple.gy/emoji-magic/';
 
 // Rotate these messages whenever the popup opens to maybe keep things fresh/fun
 const MESSAGES = [
@@ -59,7 +57,7 @@ export class SearchModal extends Modal {
     constructor(
       readonly plugin: Plugin, // generic plugin to avoid circular dep
       readonly onSubmit: (result: string) => void,
-      readonly settings: MyPluginSettings,
+      readonly settings: EmojiMagicSettings,
     ) {
         super(plugin.app);
         this.modalEl.addClass('emoji-magic-modal');

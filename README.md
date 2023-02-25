@@ -13,32 +13,14 @@ Still Screenshot:
 
 ![screenshot](./screenshots/emoji-magic-blue.png?raw=true)
 
-
-
 ## Features
 
 1. Secure -- local only, no internet
-2. Rich keyword search -- the dictionary contains `1,812` emoji and `199,658` searchable keywords and thesaurus entries.
+2. Rich keyword search -- the dictionary contains `1,812` emoji with `199,658` searchable keywords and thesaurus entries.
 3. Fast -- just keyboard shortcut and click
 4. Keyboard friendly -- arrow keys, tab, however you want.
 
 > Note: This is an [Obsidian](https://obsidian.md/)-compatible fork of the [Emoji Magic](https://github.com/SimplGy/emoji-magic) Chrome Extension I wrote.
-
-
-
-## Guiding Principles
-> Goals and Non-goals
-
-* Easy find
-  * an effort is made to include lots of possible matches
-  * eg: "blue" or "angry"
-* Keyboard friendly.
-  * Eg: `keyboard shortcut` -> `search phrase` -> `enter` and done.
-  * Because this plugin shows a grid of emoji, good keyboard support meant two-dimensional arrow key support as well.
-* Actual emoji. No images.
-  * This means: no custom emoji
-  * Also means: will render platform-appropriate versions. This can vary depending on where you're viewing the file
-  * Also means: you may see empty rectangles for emoji that are defined, but not supported by your device. (eg: 🦩 "flamingo" won't be there if you're on an older Mac)
 
 ## Installing this Plugin
 
@@ -46,6 +28,20 @@ Still Screenshot:
 1. Click "Browse community plugins" -> Search for "Magic File Hotkey"
 1. Install it, then click "enable"
 1. Add a hotkey. I like `cmd + shift + e` ("e" for "emoji").
+
+## Guiding Principles
+> Goals and Non-goals
+
+* Easy find
+  * an effort is made to include lots of possible matches
+  * eg: the color "green" or the feeling "happy"
+* Keyboard friendly.
+  * Eg: `keyboard shortcut` -> `search phrase` -> `enter` and done.
+  * Because this plugin shows a 2d grid of emoji, built two-dimensional arrow key support for navigating.
+* Actual emoji. No images.
+  * This means: no custom emoji
+  * Also means: will render platform-appropriate versions. The visual you see can vary depending on where you're viewing the file
+  * Also means: you may see empty rectangles for emoji that are defined, but not supported by your device. (eg: 🦩 "flamingo" won't be there if you're on an older Mac)
 
 ## Similar Obsidian Plugins
 
@@ -109,7 +105,7 @@ PRs welcome.
 - [ ] (upstream) adapt the headless stuff to be easier to reuse.
 
 ## Future
-- [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals
+- [ ] consider using Obsidian's native [SuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/SuggestModal) or [FuzzySuggestModal](https://marcus.se.net/obsidian-plugin-docs/reference/typescript/classes/FuzzySuggestModal) -- https://marcus.se.net/obsidian-plugin-docs/user-interface/modals -- I thought this couldn't work with a grid UI, but there's [prior art here](https://github.com/oliveryh/obsidian-emoji-toolbar/commit/1b8f7624f575cb183271a3d969ee5939c4763f8a)
 
 
 

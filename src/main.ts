@@ -17,25 +17,23 @@ limitations under the License.
 import { App, Plugin, PluginSettingTab, MarkdownView } from 'obsidian';
 
 import { SearchModal } from './search_modal';
-import { MyPluginSettings } from './interfaces';
-// import { SearchModal } from './search_modal_suggest_variant';
+import { EmojiMagicSettings } from './interfaces';
+import {CHROME_EXTENSION_URL, GITHUB_BUG_REPORT_PATH} from './cfg';
 
 // The compiled "database" from Emoji Magic upstream
 // import {array as emojilibThesaurus} from '../lib/emoji-magic/src/app_data/emoji_data.js';
 
-const CHROME_EXTENSION_URL = 'https://chrome.google.com/webstore/detail/emoji-magic/jfegjdogmpipkpmapflkkjpkhbnfppln';
-const GITHUB_REPO_URL = 'https://github.com/SimplGy/obsidian-emoji-magic';
 const emojiCount = 1_812; // emojilibThesaurus.length;
 const words = 119_658; // emojilibThesaurus.reduce((sum, obj) => sum + obj.keywords.length + obj.thesaurus.flat().length, 0);
 
-const DEFAULT_SETTINGS: MyPluginSettings = {
+const DEFAULT_SETTINGS: EmojiMagicSettings = {
 	recentEmoji: [],
 };
 
 // ---------------------------------------------------- Plugin Definition
-export default class MyPlugin extends Plugin {
+export default class EmojiMagicPlugin extends Plugin {
 	
-	settings: MyPluginSettings;
+	settings: EmojiMagicSettings;
 	
 	async onload() {
 		await this.loadSettings();
@@ -58,9 +56,6 @@ export default class MyPlugin extends Plugin {
 	// note: this is called ~every keystroke, so be aware
 	async saveSettings() {
 		await this.saveData(this.settings);
-		
-		// update the commands if needed
-		// this.resetCommands();
 	}
 
 
@@ -68,7 +63,7 @@ export default class MyPlugin extends Plugin {
 	resetCommands() {
 		// if you "add" with the same id, it works as an "update"
 		this.addCommand({
-			id: 'emoji-magic-insert', // should not change over time
+			id: 'insert', // automatically prefixed with plugin name
 			name: `Find an emoji and insert it where your cursor is`,
 			callback: () => this.openSearchUX(),
 		});
@@ -103,9 +98,9 @@ export default class MyPlugin extends Plugin {
 // ---------------------------------------------------- Settings Screen
 class SettingsTab extends PluginSettingTab {
 	
-	plugin: MyPlugin;
+	plugin: EmojiMagicPlugin;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: EmojiMagicPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}
@@ -117,24 +112,18 @@ class SettingsTab extends PluginSettingTab {
 		containerEl.createEl("h3", { text: 'How to use' });
 		containerEl.addClass('emoji-magic-settings');
 
-		// "what it does"
-		const aside = document.createElement('aside');
-		aside.innerHTML = `
-			<p>This plugin is Most useful if you add a hotkey.</p>
-			<p>I like: <code style="background-color: var(--color-base-20): padding: 0 3px;">cmd + shift + e</code></p>
-			<p>("e" for "emoji")</p>
-
-			<hr/>
-
-			<p>Your recent emoji: <code style="background-color: var(--color-base-20): padding: 0 3px;">${this.plugin.settings.recentEmoji.join('  ')}</code></p>
-
-			<hr/>
-			
-			<p>Emoji Magic is also available as a <a href="${CHROME_EXTENSION_URL}" >Chrome Extension</a>.</p>
-			<p>Please report problems with specific search phrases in the <a href="${GITHUB_REPO_URL}">GitHub repo</a>.</p>
-		`;
-
-		this.containerEl.appendChild(aside);
+		const aside = containerEl.createEl('aside');
+		aside.createEl('p', { text: 'This plugin is most useful if you add a hotkey. eg:' });
+		aside.createEl('p', { text: '' }).createEl('code', {text: 'cmd + shift + e'});
+		
+		aside.createEl('hr');
+		
+		aside.createEl('p', { text: 'Your recent emoji:' }).createEl('code', {text: this.plugin.settings.recentEmoji.join('  '), cls: 'padded-sides' });
+		
+		aside.createEl('hr');
+		
+		aside.createEl('p', { text: 'Emoji Magic is also available as a ', cls: 'muted' }).createEl('a', {text: 'Chrome Extension', href: CHROME_EXTENSION_URL});
+		aside.createEl('p', { text: 'Please report problems with specific search phrases on ', cls: 'muted' }).createEl('a', {text: 'GitHub', href: GITHUB_BUG_REPORT_PATH});;
 	}
 }
 
