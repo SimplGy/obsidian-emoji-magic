@@ -77,14 +77,14 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 ### Releasing
 
 1. Update version in `manifest.json` and `package.json`
-2. commit, push.
+2. commit, `git push`.
 3. To put on GitHub, do the following tag stuff:
 
 (replace with the new version number)
 
 ```
-git tag -a 0.1.1 -m "0.1.1"
-git push origin 0.1.1
+git tag -a 0.1.2 -m "0.1.2"
+git push origin 0.1.2
 ```
 
 > This will trigger `.github/workflows/release.yml`.
