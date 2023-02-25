@@ -24,7 +24,7 @@ Still Screenshot:
 
 ## Installing this Plugin
 
-1. Open settings -> Third party plugin -> Disable Safe mode
+1. Open settings. (if you haven't yet, one time: Third party plugin -> Disable Safe mode)
 1. Click "Browse community plugins" -> Search for "Magic File Hotkey"
 1. Install it, then click "enable"
 1. Add a hotkey. I like `cmd + shift + e` ("e" for "emoji").
