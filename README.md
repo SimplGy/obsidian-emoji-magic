@@ -89,8 +89,8 @@ git push origin 0.1.2
 
 > This will trigger `.github/workflows/release.yml`.
 > 
-> Verify the workflow is running [here](https://github.com/SimplGy/obsidian-open-file-by-magic-date/actions).
-> Verify [releases here](https://github.com/SimplGy/obsidian-open-file-by-magic-date/releases)
+> Verify the workflow is running [here](https://github.com/SimplGy/obsidian-emoji-magic/actions).
+> Verify [releases here](https://github.com/SimplGy/obsidian-emoji-magic/releases)
 
 4. (you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
 
