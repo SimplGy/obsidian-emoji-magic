@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { App, Plugin, PluginSettingTab, MarkdownView } from 'obsidian';
+import { App, Plugin, PluginSettingTab } from 'obsidian';
 
 import { SearchModal } from './search_modal';
 import { EmojiMagicSettings } from './interfaces';
@@ -64,7 +64,7 @@ export default class EmojiMagicPlugin extends Plugin {
 		// if you "add" with the same id, it works as an "update"
 		this.addCommand({
 			id: 'insert', // automatically prefixed with plugin name
-			name: `Find an emoji and insert it where your cursor is`,
+			name: `Insert emoji...`,
 			callback: () => this.openSearchUX(),
 		});
 	}
@@ -77,7 +77,7 @@ export default class EmojiMagicPlugin extends Plugin {
 	}
 
 	insertTextAtCursor = (text: string) => {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+		const view = this.app.workspace.activeEditor;
 			
 		// Make sure the user is editing a Markdown file.
 		if (view) {
