@@ -61,7 +61,7 @@ Still Screenshot:
 ### Building
 
 ```
-npm install
+# npm install
 npm run dev
 ```
 
@@ -83,8 +83,8 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 (replace with the new version number)
 
 ```
-git tag -a 0.1.2 -m "0.1.2"
-git push origin 0.1.2
+git tag -a 0.1.3 -m "0.1.3"
+git push origin 0.1.3
 ```
 
 > This will trigger `.github/workflows/release.yml`.
@@ -99,6 +99,10 @@ git push origin 0.1.2
 ## TODO
 PRs welcome.
 
+- [ ] change from 3 -> 2 chars required to see search results
+- [ ] improve startup time
+- [ ] 
+- [ ] 
 - [ ] solve the `zwj` problem (eg: "plane")
 - [ ] (upstream) improve some of the ranking (car, plane) and 
 - [ ] (upstream) fix the lack of "stemming" problem (eg: "race car")

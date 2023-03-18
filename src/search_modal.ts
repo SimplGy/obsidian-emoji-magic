@@ -24,6 +24,7 @@ import {CHROME_EXTENSION_URL, STATIC_WEB_APP_URL} from './cfg';
 
 const EMOJIS_PER_ROW = 8; // Not 100% fixed, depends on font size/zoom settings
 const RESULT_LIMIT = EMOJIS_PER_ROW * 15; // for render perf, don't draw everything.
+const SEARCH_CHARS_NEEDED = 2; // don't bother searching if user has typed fewer than this many letters.
 
 // Rotate these messages whenever the popup opens to maybe keep things fresh/fun
 const MESSAGES = [
@@ -115,19 +116,31 @@ export class SearchModal extends Modal {
 
     private filterAndRender(str: string) {
       // Empty or short query? show recent or default
-      str = str.trim();
-      let emojiObjects: Emoji[] = [];
+      const str = str.trim();
+      const el = this.dom?.resultsEl;
 
-      if (str.length < 3) {
-        let results = this.settings.recentEmoji;
-        if (results.length === 0) results = DEFAULT_RESULTS;
-        emojiObjects = results.map(toEmojiObj);
+      // No search, show recent/default
+      if (str.length === 0) {
+        const emoji: Emoji[] = this.getRecentEmoji().map(toEmojiObj);
+        renderEmoji(emoji, el);
+
+      // Typing, but not enough yet? show nothing.
+      } else if (str.length < SEARCH_CHARS_NEEDED) {
+        renderEmoji([],  el);
+
+      // Search for emoji
       } else {
-        emojiObjects = emojiSearch(str);
-        // console.log(`Emoji Magic: results for '${str}'`, emojiObjects);
+        const emoji: Emoji[] = emojiSearch(str);
+        // console.log(`Emoji Magic: results for '${str}'`, emoji);
+        renderEmoji(emoji, el);
       }
       
-      renderEmoji(emojiObjects, this.dom?.resultsEl);
+    }
+
+    // Get recently used emoji chars, falling back to defaults as necessary.
+    getRecentEmoji() {
+      const recent = this.settings.recentEmoji;
+      return recent.length === 0 ? DEFAULT_RESULTS : recent;
     }
 
     private onAnyClick = (evt) => {
