@@ -76,6 +76,12 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 
 ### Releasing
 
+1. Update the version in `package.json` (only)
+2. do `npm run version`
+
+
+
+(old directions):
 1. Update version in `manifest.json` and `package.json`
 2. commit, `git push`.
 3. To put on GitHub, do the following tag stuff:

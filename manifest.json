@@ -1,9 +1,9 @@
 {
-  "id": "emoji-magic",
-  "name": "Emoji Magic",
-  "version": "0.1.3",
-  "description": "Easily add emoji, with a powerful keyword search. 🔮 ✨ 🐇",
-  "author": "simplgy",
-  "authorUrl": "https://github.com/simplgy",
-  "isDesktopOnly": false
+	"id": "emoji-magic",
+	"name": "Emoji Magic",
+	"version": "0.1.4",
+	"description": "Easily add emoji, with a powerful keyword search. 🔮 ✨ 🐇",
+	"author": "simplgy",
+	"authorUrl": "https://github.com/simplgy",
+	"isDesktopOnly": false
 }

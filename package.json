@@ -1,11 +1,12 @@
 {
   "name": "obsidian-emoji-magic",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "",
   "main": "main.js",
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js",
+    "version": "node version-bump.mjs && git add . && git commit -m 'bump'"
   },
   "keywords": [],
   "author": "",
