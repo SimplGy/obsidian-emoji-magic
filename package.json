@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js",
-    "version": "node version-bump.mjs && git add . && git commit -m 'bump'",
-    "tag-version": "git tag -a $npm_package_version -m \"$npm_package_version\""
+    "version": "node version-bump.mjs && git add . && git commit -m 'bump' && git tag -a $npm_package_version -m \"$npm_package_version\" && git push origin $npm_package_version"
   },
   "keywords": [],
   "author": "",
