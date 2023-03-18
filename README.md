@@ -99,10 +99,8 @@ git push origin 0.1.3
 ## TODO
 PRs welcome.
 
-- [ ] change from 3 -> 2 chars required to see search results
-- [ ] improve startup time
-- [ ] 
-- [ ] 
+- [x] change from 3 -> 2 chars required to see search results, and blank out defaults during inital typing so it doesn't look like there's a bug
+- [ ] improve startup time -- 2023-03-18: took a look, but not seeing anything obvious here. I think I have to find a way to defer parsing of the large `emojilib_thesaurus.js` file. AFAIK there is no actual processing happening at startup, it's just JS parse time dragging things out.
 - [ ] solve the `zwj` problem (eg: "plane")
 - [ ] (upstream) improve some of the ranking (car, plane) and 
 - [ ] (upstream) fix the lack of "stemming" problem (eg: "race car")

@@ -17,11 +17,24 @@ limitations under the License.
 import { Modal, Plugin } from 'obsidian';
 
 import { EmojiMagicSettings, Emoji } from './interfaces';
-
-// from Emoji Magic upstream
-import {search as emojiSearch, htmlForAllEmoji as htmlForTheseEmoji, RECENT_SELECTION_LIMIT, DEFAULT_RESULTS, toObj as toEmojiObj} from '../lib/emoji-magic/src/app_data/emoji.js';
 import {CHROME_EXTENSION_URL, STATIC_WEB_APP_URL} from './cfg';
 
+// from Emoji Magic upstream
+import {
+  // pre-bound 2nd order fn `searchOn(array)`. This is an expensive function and just naiively scans an array in O(n) time, but should only run on keypress
+  search as emojiSearch,
+  // This generates HTML from an array of emoji objects, but does not do any kind of lookup or refer to the full dictionary
+  htmlForAllEmoji as htmlForTheseEmoji,
+  // constants, as you'd expect
+  RECENT_SELECTION_LIMIT,
+  DEFAULT_RESULTS,
+  // RISK: Does a `.find` O(n) lookup in emojilib_thesaurus.array
+  toObj as toEmojiObj
+} from '../lib/emoji-magic/src/app_data/emoji.js';
+
+
+
+// -------------------------------------------------------- Constants
 const EMOJIS_PER_ROW = 8; // Not 100% fixed, depends on font size/zoom settings
 const RESULT_LIMIT = EMOJIS_PER_ROW * 15; // for render perf, don't draw everything.
 const SEARCH_CHARS_NEEDED = 2; // don't bother searching if user has typed fewer than this many letters.
@@ -41,6 +54,9 @@ const RIGHT = 39;
 const DOWN = 40;
 const ENTER = 13;
 
+
+
+// -------------------------------------------------------- Type Definitions
 interface EmojiPickerDom {
   // must be the elemen that gets document.activeElement focus
   searchEl: HTMLInputElement,
@@ -51,6 +67,7 @@ interface EmojiPickerDom {
 
 
 
+// -------------------------------------------------------- Main Class
 export class SearchModal extends Modal {
     result: string;
     private dom?: EmojiPickerDom;
@@ -116,7 +133,7 @@ export class SearchModal extends Modal {
 
     private filterAndRender(str: string) {
       // Empty or short query? show recent or default
-      const str = str.trim();
+      str = str.trim();
       const el = this.dom?.resultsEl;
 
       // No search, show recent/default
