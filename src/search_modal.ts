@@ -45,7 +45,9 @@ const MESSAGES = [
   `Brought to you by <a href="http://www.simple.gy">simple.gy</a>`,
   `Check out the <a href="${STATIC_WEB_APP_URL}">web app</a>`,
 ];
-const EXAMPLE_SEARCHES = [ 'party', 'thank', 'happy', 'new', 'food', 'drink' ];
+const EXAMPLE_SEARCHES = [ 'party', 'thank', 'happy', 'new', 'food', 'drink', 'wine' ];
+
+const DEFAULT_PLACEHOLDER = 'Search for emoji';
 
 // keycodes
 const LEFT = 37;
@@ -89,7 +91,7 @@ export class SearchModal extends Modal {
         searchEl.setAttribute('type', 'search');
         searchEl.setAttribute('autofocus', 'true');
         const eg = randomPick(EXAMPLE_SEARCHES);
-        searchEl.setAttribute('placeholder', `Search for emoji (eg: "${eg}")`);
+        searchEl.setAttribute('placeholder', `${this.settings.placeholder ?? DEFAULT_PLACEHOLDER} (eg: "${eg}")`);
 
         // ------------------------ Grid of Emoji results
         const resultsEl = document.createElement('ol');

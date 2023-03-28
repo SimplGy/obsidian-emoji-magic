@@ -67,6 +67,14 @@ npm run dev
 
 (for auto refreshing) install `git clone https://github.com/pjeby/hot-reload.git` and turn it on
 
+### (one time) symlink from dev environment to Obsidian plugin dir
+
+right click on the obsidian plugins folder, "new terminal at folder". then:
+
+```
+ln -s /Users/eric/Projects/obsidian-emoji-magic obsidian-emoji-magic
+```
+
 ### (rarely) Sync with the upstream project
 
 ```
@@ -84,7 +92,7 @@ git clone https://github.com/SimplGy/emoji-magic.git lib/emoji-magic
 > Verify the workflow is running [here](https://github.com/SimplGy/obsidian-emoji-magic/actions).
 > Verify [releases here](https://github.com/SimplGy/obsidian-emoji-magic/releases)
 
-4. (you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
+(you're done) simply doing a github release and running release.yml will make the new version of the plugin available on the Obsidian marketplace. Nice!
 
 
 

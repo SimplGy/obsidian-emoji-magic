@@ -16,6 +16,8 @@ limitations under the License.
 
 export interface EmojiMagicSettings {
 	recentEmoji: string[];
+    // the text inside the emoji search box
+	placeholder?: string;
 }
 
 export interface Emoji {}

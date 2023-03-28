@@ -65,14 +65,29 @@ export default class EmojiMagicPlugin extends Plugin {
 		this.addCommand({
 			id: 'insert', // automatically prefixed with plugin name
 			name: `Insert emoji...`,
-			callback: () => this.openSearchUX(),
+			callback: () => this.openSearchUX(this.insertTextAtCursor),
+		});
+		this.addCommand({
+			id: 'copy',
+			name: `Copy emoji to clipboard...`,
+			callback: () => this.openSearchUX(this.copyToClipboard, "Copy emoji"),
+		});
+		this.addCommand({
+			id: 'add-to-filename-start',
+			name: `Add emoji to filename...`,
+			callback: () => this.openSearchUX(this.updateFilenameStart, "Add emoji to filename"),
 		});
 	}
 
 
 	// ---------------------------------------------------- Actual Behavior
-	openSearchUX() {
-		const modal = new SearchModal(this, this.insertTextAtCursor, this.settings);
+
+	// Open the search UX. when complete, calls the callback with the selected emoji.
+	// if you want, override the placeholder message
+	openSearchUX(callback: (text: string) => void, placeholder?: string) {
+		// const settings = placeholder ? {...this.settings, placeholder } : this.settings;
+		const settings = {...this.settings, placeholder };
+		const modal = new SearchModal(this, callback, settings);
 		modal.open();
 	}
 
@@ -91,6 +106,25 @@ export default class EmojiMagicPlugin extends Plugin {
 			console.warn("Asked to insertTextAtCursor, but didn't find a MarkdownView");
 		}
 	};
+
+	copyToClipboard = (text: string) => {
+		navigator.clipboard.writeText(text)
+	};
+	
+	updateFilenameStart = (text: string) => {
+		const view = this.app.workspace.activeEditor;
+		
+		// Calculate the new "path" (simple file rename)
+		let curPath = view.file.path;
+		const idx = curPath.lastIndexOf(view.file.name);
+		const start = curPath.substring(0, idx);
+		const end = curPath.substring(idx)
+		const newPath = `${start}${text} ${end}`;
+
+		// Set the value
+		this.app.fileManager.renameFile(view.file, newPath);
+	};
+	
 }
 
 
@@ -115,15 +149,11 @@ class SettingsTab extends PluginSettingTab {
 		const aside = containerEl.createEl('aside');
 		aside.createEl('p', { text: 'This plugin is most useful if you add a hotkey. eg:' });
 		aside.createEl('p', { text: '' }).createEl('code', {text: 'cmd + shift + e'});
-		
 		aside.createEl('hr');
-		
 		aside.createEl('p', { text: 'Your recent emoji:' }).createEl('code', {text: this.plugin.settings.recentEmoji.join('  '), cls: 'padded-sides' });
-		
 		aside.createEl('hr');
-		
 		aside.createEl('p', { text: 'Emoji Magic is also available as a ', cls: 'muted' }).createEl('a', {text: 'Chrome Extension', href: CHROME_EXTENSION_URL});
-		aside.createEl('p', { text: 'Please report problems with specific search phrases on ', cls: 'muted' }).createEl('a', {text: 'GitHub', href: GITHUB_BUG_REPORT_PATH});;
+		aside.createEl('p', { text: 'Please report problems with specific search phrases on ', cls: 'muted' }).createEl('a', {text: 'GitHub', href: GITHUB_BUG_REPORT_PATH});
 	}
 }
 
