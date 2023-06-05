@@ -76,7 +76,7 @@ export class SearchModal extends Modal {
 
     constructor(
       readonly plugin: EmojiMagicPluginType, // Type indirection here instead of direct class avoids a circular dependency
-      readonly onSubmit: (result: string) => void,
+      readonly onSubmit: (result?: string) => void,
       readonly placeholderMsg: string = DEFAULT_PLACEHOLDER,
     ) {
         super(plugin.app);
@@ -113,15 +113,20 @@ export class SearchModal extends Modal {
         };
 
         // ------------------------ Event Listeners
-        searchEl.addEventListener('keyup', evt => {
-          this.onKeyupSearchArea(evt, this.dom!);
+        // WARNING: Obsidian closes the command palette (and launches your plugin) on `keydown`.
+        // This means you can sometimes get one extra `keyup` event inside your plugin. Use `keypress` instead of `keyup` for this reason
+        searchEl.addEventListener('keypress', evt => {
+          this.onKeySearchArea(evt, this.dom!);
         });
         // delegated button click handler. Is also fired for keyboard enter on button elements.
         contentEl.addEventListener('click', this.onAnyClick);
         contentEl.addEventListener('keyup', this.onAnyKey);
+
+        // ------------------------- Start with at least one render
+        this.filterAndRender(searchEl.value);
     }
 
-    private onKeyupSearchArea = (evt, dom: EmojiPickerDom) => {
+    private onKeySearchArea = (evt, dom: EmojiPickerDom) => {
       const el = evt.target as HTMLInputElement|undefined;
       const str = el?.value ?? '';
 
@@ -192,7 +197,7 @@ export class SearchModal extends Modal {
       this.chooseEmoji(buttonEl.innerText);
     }
 
-    private chooseEmoji(char: string = '') {
+    private chooseEmoji(char?: string) {
       this.trackRecent(char);
       this.close();
       this.onSubmit(char);
@@ -205,7 +210,7 @@ export class SearchModal extends Modal {
 
   // add recent selection, but only track the most recent k
   // also duplicates: if it's already present, remove matches first before putting the most recent at the front
-  private trackRecent(char: string) {
+  private trackRecent(char?: string) {
     if (!char) return;
 
     // local copy:
@@ -230,8 +235,8 @@ export class SearchModal extends Modal {
 function getFirstEmoji(dom: EmojiPickerDom) {
   const btn = dom.resultsEl.querySelector('button'); // get the first button
   if (!btn) return;
-  const char = btn.innerText;
-  return char;
+  const char = btn.innerText.trim();
+  return char === '' ? undefined : char;
 }
 
 // Move focus horizontally. +1 is right, -1 is left.

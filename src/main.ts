@@ -84,16 +84,16 @@ export default class EmojiMagicPlugin extends Plugin implements EmojiMagicPlugin
 
 	// Open the search UX. when complete, calls the callback with the selected emoji.
 	// if you want, override the placeholder message
-	openSearchUX(callback: (text: string) => void, placeholder?: string) {
+	openSearchUX(callback: (text?: string) => void, placeholder?: string) {
 		const modal = new SearchModal(this, callback, placeholder);
 		modal.open();
 	}
 
-	insertTextAtCursor = (text: string) => {
+	insertTextAtCursor = (text: string = '') => {
 		const view = this.app.workspace.activeEditor;
 			
 		// Make sure the user is editing a Markdown file.
-		if (view) {
+		if (view?.editor) {
 			// Insert text
 			const cursor = view.editor.getCursor();
 			view.editor.replaceRange(text, cursor);
@@ -105,12 +105,15 @@ export default class EmojiMagicPlugin extends Plugin implements EmojiMagicPlugin
 		}
 	};
 
-	copyToClipboard = (text: string) => {
+	copyToClipboard = (text?: string) => {
+		if (!text) return;
 		navigator.clipboard.writeText(text)
 	};
 	
-	updateFilenameStart = (text: string) => {
+	updateFilenameStart = (text?: string) => {
+		if (!text) return;
 		const view = this.app.workspace.activeEditor;
+		if (!view?.file) return console.warn('no view.file');
 		
 		// Calculate the new "path" (simple file rename)
 		let curPath = view.file.path;
