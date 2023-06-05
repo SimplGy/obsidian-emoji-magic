@@ -17,7 +17,7 @@ limitations under the License.
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 
 import { SearchModal } from './search_modal';
-import { EmojiMagicSettings } from './interfaces';
+import { EmojiMagicSettings, EmojiMagicPluginType } from './interfaces';
 import {CHROME_EXTENSION_URL, GITHUB_BUG_REPORT_PATH} from './cfg';
 
 // The compiled "database" from Emoji Magic upstream
@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS: EmojiMagicSettings = {
 };
 
 // ---------------------------------------------------- Plugin Definition
-export default class EmojiMagicPlugin extends Plugin {
+export default class EmojiMagicPlugin extends Plugin implements EmojiMagicPluginType {
 	
 	settings: EmojiMagicSettings;
 	
@@ -85,9 +85,7 @@ export default class EmojiMagicPlugin extends Plugin {
 	// Open the search UX. when complete, calls the callback with the selected emoji.
 	// if you want, override the placeholder message
 	openSearchUX(callback: (text: string) => void, placeholder?: string) {
-		// const settings = placeholder ? {...this.settings, placeholder } : this.settings;
-		const settings = {...this.settings, placeholder };
-		const modal = new SearchModal(this, callback, settings);
+		const modal = new SearchModal(this, callback, placeholder);
 		modal.open();
 	}
 

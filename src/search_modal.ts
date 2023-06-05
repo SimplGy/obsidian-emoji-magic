@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Modal, Plugin } from 'obsidian';
 
-import { EmojiMagicSettings, Emoji } from './interfaces';
+import { Emoji, EmojiMagicPluginType } from './interfaces';
 import {CHROME_EXTENSION_URL, STATIC_WEB_APP_URL} from './cfg';
 
 // from Emoji Magic upstream
@@ -75,9 +75,9 @@ export class SearchModal extends Modal {
     private dom?: EmojiPickerDom;
 
     constructor(
-      readonly plugin: Plugin, // generic plugin to avoid circular dep
+      readonly plugin: EmojiMagicPluginType, // Type indirection here instead of direct class avoids a circular dependency
       readonly onSubmit: (result: string) => void,
-      readonly settings: EmojiMagicSettings,
+      readonly placeholderMsg: string = DEFAULT_PLACEHOLDER,
     ) {
         super(plugin.app);
         this.modalEl.addClass('emoji-magic-modal');
@@ -91,7 +91,7 @@ export class SearchModal extends Modal {
         searchEl.setAttribute('type', 'search');
         searchEl.setAttribute('autofocus', 'true');
         const eg = randomPick(EXAMPLE_SEARCHES);
-        searchEl.setAttribute('placeholder', `${this.settings.placeholder ?? DEFAULT_PLACEHOLDER} (eg: "${eg}")`);
+        searchEl.setAttribute('placeholder', `${this.placeholderMsg} (eg: "${eg}")`);
 
         // ------------------------ Grid of Emoji results
         const resultsEl = document.createElement('ol');
@@ -158,7 +158,7 @@ export class SearchModal extends Modal {
 
     // Get recently used emoji chars, falling back to defaults as necessary.
     getRecentEmoji() {
-      const recent = this.settings.recentEmoji;
+      const recent = this.plugin.settings.recentEmoji;
       return recent.length === 0 ? DEFAULT_RESULTS : recent;
     }
 
@@ -204,20 +204,23 @@ export class SearchModal extends Modal {
     }
 
   // add recent selection, but only track the most recent k
-  // also deduplicates: if it's already present, remove matches first before putting the most recent at the front
+  // also duplicates: if it's already present, remove matches first before putting the most recent at the front
   private trackRecent(char: string) {
     if (!char) return;
 
-    let arr = this.settings.recentEmoji.slice();
-
+    // local copy:
+    let arr = this.plugin.settings.recentEmoji.slice();
+    // Remove the "just chosen" char, if it's already in there:
     arr = arr.filter(c => c !== char);
+    // Add it to the front, no matter what:
     arr.unshift(char);
+    // Limit the size, removing things from the tail:
     if (arr.length > RECENT_SELECTION_LIMIT) {
       arr = arr.slice(0, RECENT_SELECTION_LIMIT);
     }
 
-    this.settings.recentEmoji = arr;
-    this.plugin.saveData(this.settings);
+    this.plugin.settings.recentEmoji = arr;
+    this.plugin.saveData(this.plugin.settings);
   }
 }
 

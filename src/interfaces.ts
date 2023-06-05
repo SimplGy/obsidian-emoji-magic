@@ -14,10 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { Plugin } from 'obsidian';
+
 export interface EmojiMagicSettings {
 	recentEmoji: string[];
-    // the text inside the emoji search box
-	placeholder?: string;
+}
+
+export interface EmojiMagicPluginType extends Plugin {
+    settings: EmojiMagicSettings;
 }
 
 export interface Emoji {}
